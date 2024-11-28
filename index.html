@@ -1,51 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini Mining App</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f4f4f4;
-    }
-    .container {
-      margin-top: 50px;
-    }
-    button {
-      font-size: 20px;
-      padding: 15px 30px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .score {
-      font-size: 24px;
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Mining App</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        #mineButton { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        #mineButton:hover { background-color: #45a049; }
+        #balance { font-size: 20px; margin-top: 20px; }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Mini Mining App</h1>
-    <p>Tap the button to mine coins!</p>
-    <button onclick="mineCoin()">Mine</button>
-    <div class="score">Coins: <span id="coins">0</span></div>
-  </div>
+    <h1>Coin Mining Game</h1>
+    <p>Tap the button below to mine coins!</p>
+    <button id="mineButton">Mine 1 Coin</button>
+    <p id="balance">Balance: 0 Coins</p>
 
-  <script>
-    let coins = 0;
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB1mxsRdlEue6fzV0Z6mY5FF9riU5VQsxI",
+            authDomain: "mini-mining-app.firebaseapp.com",
+            databaseURL: "https://mini-mining-app-default-rtdb.firebaseio.com/",
+            projectId: "mini-mining-app",
+            storageBucket: "mini-mining-app.firebasestorage.app",
+            messagingSenderId: "870453803461",
+            appId: "1:870453803461:web:a1ede933a1d0b91ccb33ac"
+        };
 
-    function mineCoin() {
-      coins += 1;
-      document.getElementById("coins").textContent = coins;
-    }
-  </script>
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(app);
+
+        // Telegram Web App access
+        const userId = Telegram.WebApp.initDataUnsafe.user.id;
+
+        // Get user data from Firebase
+        function getUserData() {
+            const userRef = database.ref('users/' + userId);
+            userRef.once('value').then(snapshot => {
+                const userData = snapshot.val();
+                if (userData) {
+                    document.getElementById('balance').innerText = "Balance: " + userData.balance + " Coins";
+                } else {
+                    // Create a new user if not exists
+                    userRef.set({
+                        balance: 0
+                    });
+                    document.getElementById('balance').innerText = "Balance: 0 Coins";
+                }
+            });
+        }
+
+        // Update user balance in Firebase
+        function mineCoin() {
+            const userRef = database.ref('users/' + userId);
+            userRef.once('value').then(snapshot => {
+                const userData = snapshot.val();
+                if (userData) {
+                    userRef.update({
+                        balance: userData.balance + 1
+                    });
+                    document.getElementById('balance').innerText = "Balance: " + (userData.balance + 1) + " Coins";
+                }
+            });
+        }
+
+        // Event listener for mining button
+        document.getElementById('mineButton').addEventListener('click', function() {
+            mineCoin();
+        });
+
+        // Load user data on page load
+        getUserData();
+    </script>
 </body>
 </html>
