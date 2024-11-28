@@ -3,7 +3,7 @@ from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Replace this with your bot's API token
 API_TOKEN = "7605669588:AAHP6RNFa2M0R1fDSHAJY3oQnL-x4G3PXWU"
-WEB_APP_URL = ""  # Replace with your Web App URL
+WEB_APP_URL = "https://developer-alif.github.io/mini-mining-app./"  # Replace with your Web App URL
 
 bot = telebot.TeleBot(API_TOKEN)
 
