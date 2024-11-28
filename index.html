@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Mining App</title>
+    <title>Coin Mining Game</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
         #mineButton { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
@@ -17,10 +17,11 @@
     <button id="mineButton">Mine 1 Coin</button>
     <p id="balance">Balance: 0 Coins</p>
 
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js"></script>
     <script>
-        // Firebase configuration
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyB1mxsRdlEue6fzV0Z6mY5FF9riU5VQsxI",
             authDomain: "mini-mining-app.firebaseapp.com",
@@ -35,7 +36,7 @@
         const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database(app);
 
-        // Telegram Web App access
+        // Get userId from Telegram Web App context
         const userId = Telegram.WebApp.initDataUnsafe.user.id;
 
         // Get user data from Firebase
@@ -46,7 +47,7 @@
                 if (userData) {
                     document.getElementById('balance').innerText = "Balance: " + userData.balance + " Coins";
                 } else {
-                    // Create a new user if not exists
+                    // Initialize user data if not found
                     userRef.set({
                         balance: 0
                     });
@@ -62,14 +63,14 @@
                 const userData = snapshot.val();
                 if (userData) {
                     userRef.update({
-                        balance: userData.balance + 1
+                        balance: userData.balance + 1  // Increment balance by 1
                     });
                     document.getElementById('balance').innerText = "Balance: " + (userData.balance + 1) + " Coins";
                 }
             });
         }
 
-        // Event listener for mining button
+        // Event listener for the mine button
         document.getElementById('mineButton').addEventListener('click', function() {
             mineCoin();
         });
