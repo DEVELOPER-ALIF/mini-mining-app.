@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Color Changing App</title>
+  <title>Phone Control App</title>
   <style>
     * {
       margin: 0;
@@ -17,69 +17,107 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #f0f0f0;
-      transition: background-color 0.5s ease;
+      background-color: #f4f4f4;
+      flex-direction: column;
     }
 
-    .app-container {
+    .control-panel {
       text-align: center;
     }
 
     h1 {
       font-size: 2.5em;
       color: #333;
-      margin-bottom: 10px;
     }
 
-    p {
-      font-size: 1.2em;
-      color: #555;
-      margin-bottom: 20px;
-    }
-
-    button {
+    .control-button {
       padding: 10px 20px;
       font-size: 1.2em;
-      background-color: #007BFF;
+      background-color: #4CAF50;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      margin: 10px;
       transition: transform 0.2s ease;
     }
 
-    button:hover {
+    .control-button:hover {
       transform: scale(1.1);
     }
 
-    button:active {
+    .control-button:active {
       transform: scale(1);
+    }
+
+    .gallery {
+      display: none;
+      margin-top: 20px;
+      max-width: 80%;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .volume-control {
+      margin-top: 20px;
+    }
+
+    .volume-slider {
+      width: 100%;
     }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <h1>Surprise Me!</h1>
-    <p>Click the button to change the background color.</p>
-    <button id="colorChangeButton">Change Color</button>
+  <div class="control-panel">
+    <h1>Phone Control App</h1>
+    <button id="toggleGalleryBtn" class="control-button">Toggle Gallery</button>
+    <button id="changeThemeBtn" class="control-button">Change Theme</button>
+    
+    <div id="gallery" class="gallery">
+      <img src="https://via.placeholder.com/500" alt="Image 1">
+      <img src="https://via.placeholder.com/500" alt="Image 2">
+      <img src="https://via.placeholder.com/500" alt="Image 3">
+    </div>
+
+    <div class="volume-control">
+      <label for="volume">Volume Control:</label>
+      <input type="range" id="volume" class="volume-slider" min="0" max="100" value="50">
+      <p id="volumeValue">Volume: 50</p>
+    </div>
   </div>
 
   <script>
-    const button = document.getElementById('colorChangeButton');
+    // Toggle Gallery visibility
+    const toggleGalleryBtn = document.getElementById('toggleGalleryBtn');
+    const gallery = document.getElementById('gallery');
 
-    button.addEventListener('click', () => {
-      const randomColor = getRandomColor();
-      document.body.style.backgroundColor = randomColor;
+    toggleGalleryBtn.addEventListener('click', () => {
+      gallery.style.display = gallery.style.display === 'none' ? 'block' : 'none';
     });
 
-    function getRandomColor() {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+    // Change Theme (Light/Dark Mode)
+    const changeThemeBtn = document.getElementById('changeThemeBtn');
+    changeThemeBtn.addEventListener('click', () => {
+      const currentTheme = document.body.style.backgroundColor;
+      if (currentTheme === 'rgb(244, 244, 244)') {
+        document.body.style.backgroundColor = '#333';
+        document.body.style.color = '#fff';
+      } else {
+        document.body.style.backgroundColor = '#f4f4f4';
+        document.body.style.color = '#333';
       }
-      return color;
-    }
+    });
+
+    // Volume control
+    const volumeSlider = document.getElementById('volume');
+    const volumeValue = document.getElementById('volumeValue');
+
+    volumeSlider.addEventListener('input', () => {
+      volumeValue.textContent = `Volume: ${volumeSlider.value}`;
+    });
   </script>
 </body>
 </html>
