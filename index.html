@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image Downloader</title>
+  <title>Professional Image Downloader</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f9;
+      background: linear-gradient(135deg, #007bff, #6c757d);
+      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -17,39 +18,39 @@
     }
 
     .container {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 20px;
+      background: #ffffff;
+      color: #333;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      padding: 25px;
       max-width: 400px;
       width: 100%;
       text-align: center;
     }
 
     h1 {
-      font-size: 24px;
-      color: #333;
+      font-size: 26px;
       margin-bottom: 20px;
     }
 
     input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 10px 0;
       border: 1px solid #ddd;
-      border-radius: 5px;
+      border-radius: 8px;
       font-size: 16px;
     }
 
     button {
       background-color: #007bff;
       color: #fff;
-      padding: 10px 15px;
+      padding: 12px;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
-      margin-top: 10px;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
@@ -61,14 +62,32 @@
       font-size: 14px;
       color: red;
     }
+
+    .ad-container {
+      margin-top: 20px;
+    }
   </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
   <div class="container">
     <h1>Image Downloader</h1>
+    <p>Enter the image URL below and click download:</p>
     <input type="text" id="imageUrl" placeholder="Enter Image URL">
     <button id="downloadBtn">Download Image</button>
     <div class="message" id="message"></div>
+    <div class="ad-container">
+      <!-- AdMob Ad Placeholder -->
+      <ins class="adsbygoogle"
+        style="display:block; width: 100%; height: 90px;"
+        data-ad-client="ca-app-pub-5982204852712271~8397226774"
+        data-ad-slot="6032386491"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
   </div>
 
   <script>
@@ -77,7 +96,7 @@
       const message = document.getElementById('message');
 
       if (imageUrl.trim() === '') {
-        message.textContent = 'Please enter a valid URL.';
+        message.textContent = 'Please enter a valid image URL.';
         return;
       }
 
@@ -88,6 +107,7 @@
       a.click();
       document.body.removeChild(a);
 
+      message.style.color = 'green';
       message.textContent = 'Image download initiated!';
       setTimeout(() => {
         message.textContent = '';
