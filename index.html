@@ -3,120 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phone Control App</title>
+  <title>Image Downloader</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
       font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #f4f4f4;
-      flex-direction: column;
     }
 
-    .control-panel {
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 400px;
+      width: 100%;
       text-align: center;
     }
 
     h1 {
-      font-size: 2.5em;
+      font-size: 24px;
       color: #333;
+      margin-bottom: 20px;
     }
 
-    .control-button {
-      padding: 10px 20px;
-      font-size: 1.2em;
-      background-color: #4CAF50;
-      color: white;
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 15px;
       border: none;
       border-radius: 5px;
+      font-size: 16px;
       cursor: pointer;
-      margin: 10px;
-      transition: transform 0.2s ease;
+      margin-top: 10px;
     }
 
-    .control-button:hover {
-      transform: scale(1.1);
+    button:hover {
+      background-color: #0056b3;
     }
 
-    .control-button:active {
-      transform: scale(1);
-    }
-
-    .gallery {
-      display: none;
-      margin-top: 20px;
-      max-width: 80%;
-    }
-
-    .gallery img {
-      width: 100%;
-      border-radius: 8px;
-    }
-
-    .volume-control {
-      margin-top: 20px;
-    }
-
-    .volume-slider {
-      width: 100%;
+    .message {
+      margin-top: 15px;
+      font-size: 14px;
+      color: red;
     }
   </style>
 </head>
 <body>
-  <div class="control-panel">
-    <h1>Phone Control App</h1>
-    <button id="toggleGalleryBtn" class="control-button">Toggle Gallery</button>
-    <button id="changeThemeBtn" class="control-button">Change Theme</button>
-    
-    <div id="gallery" class="gallery">
-      <img src="https://via.placeholder.com/500" alt="Image 1">
-      <img src="https://via.placeholder.com/500" alt="Image 2">
-      <img src="https://via.placeholder.com/500" alt="Image 3">
-    </div>
-
-    <div class="volume-control">
-      <label for="volume">Volume Control:</label>
-      <input type="range" id="volume" class="volume-slider" min="0" max="100" value="50">
-      <p id="volumeValue">Volume: 50</p>
-    </div>
+  <div class="container">
+    <h1>Image Downloader</h1>
+    <input type="text" id="imageUrl" placeholder="Enter Image URL">
+    <button id="downloadBtn">Download Image</button>
+    <div class="message" id="message"></div>
   </div>
 
   <script>
-    // Toggle Gallery visibility
-    const toggleGalleryBtn = document.getElementById('toggleGalleryBtn');
-    const gallery = document.getElementById('gallery');
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+      const imageUrl = document.getElementById('imageUrl').value;
+      const message = document.getElementById('message');
 
-    toggleGalleryBtn.addEventListener('click', () => {
-      gallery.style.display = gallery.style.display === 'none' ? 'block' : 'none';
-    });
-
-    // Change Theme (Light/Dark Mode)
-    const changeThemeBtn = document.getElementById('changeThemeBtn');
-    changeThemeBtn.addEventListener('click', () => {
-      const currentTheme = document.body.style.backgroundColor;
-      if (currentTheme === 'rgb(244, 244, 244)') {
-        document.body.style.backgroundColor = '#333';
-        document.body.style.color = '#fff';
-      } else {
-        document.body.style.backgroundColor = '#f4f4f4';
-        document.body.style.color = '#333';
+      if (imageUrl.trim() === '') {
+        message.textContent = 'Please enter a valid URL.';
+        return;
       }
-    });
 
-    // Volume control
-    const volumeSlider = document.getElementById('volume');
-    const volumeValue = document.getElementById('volumeValue');
+      const a = document.createElement('a');
+      a.href = imageUrl;
+      a.download = 'image';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
 
-    volumeSlider.addEventListener('input', () => {
-      volumeValue.textContent = `Volume: ${volumeSlider.value}`;
+      message.textContent = 'Image download initiated!';
+      setTimeout(() => {
+        message.textContent = '';
+      }, 3000);
     });
   </script>
 </body>
